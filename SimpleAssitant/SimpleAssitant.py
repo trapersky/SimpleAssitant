@@ -1,4 +1,5 @@
-from calendar import c
+from asyncio import Task
+from logging import PlaceHolder
 import string
 from time import strftime
 import tkinter as tk
@@ -11,8 +12,8 @@ window.geometry("640x480")
 window.minsize(400, 400)
 
 name = os.getlogin()
-task_var=tk.StringVar()
-
+task_var = tk.StringVar()
+tasks = ""
 
 def greeting():
     string = f"Hello {name}!"
@@ -27,6 +28,9 @@ def createTaskWindow():
     new_window = tk.Toplevel()
     new_window.title("Enter Task")
     new_window.minsize(400, 200)
+    task_entry = tk.Entry(new_window, textvariable = task_var, font=("Arial", 20))
+    task_entry.place(x = 200, y = 100,
+                     anchor = tk.CENTER)
     button_submit = ttk.Button(new_window,
                               text = "Submit",
                               command = lambda: [submit(), new_window.destroy()])
@@ -34,9 +38,9 @@ def createTaskWindow():
                         anchor = tk.CENTER)
 
 def submit():
-    task = task_var.get()
-
-
+    tasks = task_var.get()
+    button1 ["text"] = tasks
+        
 def clock():
     string = strftime('%H:%M:%S')
     timer.config(text = string)
@@ -49,7 +53,7 @@ timer.place(relx = 1,
 
 def updateTask1():
     if button1 ["text"] == "Task 1":
-        createTaskWindow()        
+        createTaskWindow()
     else:
         button1 ["text"] = "Task 1"        
 
