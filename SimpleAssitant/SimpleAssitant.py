@@ -40,6 +40,9 @@ def createTaskWindow():
 def submit():
     tasks = task_var.get()
     button1 ["text"] = tasks
+    #replace the button1 with an elif statement
+    #include dictionary switch-like statement for 0, 1, 2
+    #or just elif the above ones to classify which button was pressed and assign to correct one
         
 def clock():
     string = strftime('%H:%M:%S')
