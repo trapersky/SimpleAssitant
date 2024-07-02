@@ -1,5 +1,3 @@
-from asyncio import Task
-from logging import PlaceHolder
 import string
 from time import strftime
 import tkinter as tk
@@ -14,6 +12,7 @@ window.minsize(400, 400)
 name = os.getlogin()
 task_var = tk.StringVar()
 tasks = ""
+bclick = 0
 
 def greeting():
     string = f"Hello {name}!"
@@ -39,7 +38,9 @@ def createTaskWindow():
 
 def submit():
     tasks = task_var.get()
-    button1 ["text"] = tasks
+    if bclick == 0: button1 ["text"] = tasks
+    elif bclick == 1: button2 ["text"] = tasks
+    elif bclick == 2: button3 ["text"] = tasks
     #replace the button1 with an elif statement
     #include dictionary switch-like statement for 0, 1, 2
     #or just elif the above ones to classify which button was pressed and assign to correct one
@@ -56,15 +57,27 @@ timer.place(relx = 1,
 
 def updateTask1():
     if button1 ["text"] == "Task 1":
+        global bclick
+        bclick = 0
         createTaskWindow()
     else:
         button1 ["text"] = "Task 1"        
 
 def updateTask2():
-    button2 ["text"] = "Test 2"
+    if button2 ["text"] == "Task 2":
+        global bclick
+        bclick = 1
+        createTaskWindow()
+    else:
+        button2 ["text"] = "Task 2"
 
 def updateTask3():
-    button3 ["text"] = "Test 3"
+    if button3 ["text"] == "Task 3":
+        global bclick
+        bclick = 2
+        createTaskWindow()
+    else:
+        button3 ["text"] = "Task 3"
 
 button1 = ttk.Button (window, text = "Task 1", command = updateTask1)
 button1.place(x = 320, y = 200,
