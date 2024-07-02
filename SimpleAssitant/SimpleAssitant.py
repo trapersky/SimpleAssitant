@@ -41,17 +41,14 @@ def submit():
     if bclick == 0: button1 ["text"] = tasks
     elif bclick == 1: button2 ["text"] = tasks
     elif bclick == 2: button3 ["text"] = tasks
-    #replace the button1 with an elif statement
-    #include dictionary switch-like statement for 0, 1, 2
-    #or just elif the above ones to classify which button was pressed and assign to correct one
         
-def clock():
+def mainClock():
     string = strftime('%H:%M:%S')
-    timer.config(text = string)
-    timer.after(1000, clock)
+    primary_timer.config(text = string)
+    primary_timer.after(1000, mainClock)
 
-timer = tk.Label(font=('Arial',20))
-timer.place(relx = 1,
+primary_timer = tk.Label(font=('Arial',20))
+primary_timer.place(relx = 1,
             rely = 0,
             anchor=tk.NE)
 
@@ -92,7 +89,7 @@ button3.place(x = 320, y = 280,
              anchor = CENTER)
 
 
-clock()
+mainClock()
 greeting()
 
 window.mainloop()
