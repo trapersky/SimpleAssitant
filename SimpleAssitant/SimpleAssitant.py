@@ -1,16 +1,20 @@
 import string
+import time
 from time import strftime
 import tkinter as tk
-from tkinter import CENTER, Toplevel, ttk
+from tkinter.ttk import *
+from tkinter import ANCHOR, CENTER, LEFT, Toplevel, ttk
 import os
 
 window = tk.Tk()
 window.title("Simple_Assistant")
 window.geometry("640x480")
-window.minsize(400, 400)
+window.minsize(640, 480)
+window.maxsize(640, 480)
 
 name = os.getlogin()
 task_var = tk.StringVar()
+time_var = tk.StringVar()
 tasks = ""
 bclick = 0
 
@@ -30,7 +34,7 @@ def createTaskWindow():
     task_entry = tk.Entry(new_window, textvariable = task_var, font=("Arial", 20))
     task_entry.place(x = 200, y = 100,
                      anchor = tk.CENTER)
-    button_submit = ttk.Button(new_window,
+    button_submit = tk.Button(new_window,
                               text = "Submit",
                               command = lambda: [submit(), new_window.destroy()])
     button_submit.place(x = 200, y = 160,
@@ -76,18 +80,50 @@ def updateTask3():
     else:
         button3 ["text"] = "Task 3"
 
-button1 = ttk.Button (window, text = "Task 1", command = updateTask1)
-button1.place(x = 320, y = 200,
-             anchor = CENTER)
+button1 = tk.Button (window, text = "Task 1", command = updateTask1, width = 30)
+button1.place(x = 120, y = 200)
 
-button2 = ttk.Button (window, text = "Task 2", command = updateTask2)
-button2.place(x = 320, y = 240,
-             anchor = CENTER)
+button2 = tk.Button (window, text = "Task 2", command = updateTask2, width = 30)
+button2.place(x = 120, y = 240)
 
-button3 = ttk.Button (window, text = "Task 3", command = updateTask3)
-button3.place(x = 320, y = 280,
-             anchor = CENTER)
+button3 = tk.Button (window, text = "Task 3", command = updateTask3, width = 30)
+button3.place(x = 120, y = 280) 
 
+timer1 = tk.Button (window, text = '00:00:00')
+timer1.place(x = 340, y = 200)
+
+timer2 = tk.Button (window, text = '00:00:00')
+timer2.place(x = 340, y = 240)
+
+timer3 = tk.Button (window, text = '00:00:00')
+timer3.place(x = 340, y = 280)
+
+pause1 = tk.Button (window, text = 'P', width = 2)
+pause1.place(x = 390, y = 200)
+
+pause2 = tk.Button (window, text = 'P', width = 2)
+pause2.place(x = 390, y = 240)
+
+pause3 = tk.Button (window, text = 'P', width = 2)
+pause3.place(x = 390, y = 280)
+
+start1 = tk.Button (window, text = 'S', width = 2)
+start1.place(x = 412, y = 200)
+
+start2 = tk.Button (window, text = 'S', width = 2)
+start2.place(x = 412, y = 240)
+
+start3 = tk.Button (window, text = 'S', width = 2)
+start3.place(x = 412, y = 280)
+
+clear1 = tk.Button (window, text = 'C', width = 2)
+clear1.place(x = 434, y = 200)
+
+clear2 = tk.Button (window, text = 'C', width = 2)
+clear2.place(x = 434, y = 240)
+
+clear3 = tk.Button (window, text = 'C', width = 2)
+clear3.place(x = 434, y = 280)
 
 mainClock()
 greeting()
