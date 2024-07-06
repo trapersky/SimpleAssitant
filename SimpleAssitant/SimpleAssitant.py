@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from pickle import FALSE
 import string
 import time
 from time import strftime
@@ -49,7 +50,7 @@ def createTimeWindow():
     new_window.title("Declare time")
     window.withdraw()
     new_window.minsize(400, 200)
-    task_entry = tk.Entry(new_window, textvariable = time_var, font=("Arial", 20))
+    task_entry = tk.Entry(new_window, validate="key", validatecommand = (window.register(validateTimeInput), "%P"), textvariable = time_var, font=("Arial", 20))
     task_entry.place(x = 200, y = 100,
                      anchor = tk.CENTER)
     button_submit = tk.Button(new_window,
@@ -57,6 +58,17 @@ def createTimeWindow():
                               command = lambda: [assignTime(), new_window.destroy()])
     button_submit.place(x = 200, y = 160,
                         anchor = tk.CENTER)
+
+def validateTimeInput(time_input):
+    if len(time_input) > 8:
+        return FALSE
+    checks = []
+    for i, char in enumerate (time_input):
+        if i in (2,5):
+            checks.append(char == ":")
+        else:
+            checks.append(char.isdecimal())
+    return all(checks)
 
 def submit():
     tasks = task_var.get()
