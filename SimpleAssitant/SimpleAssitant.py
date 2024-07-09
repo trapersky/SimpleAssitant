@@ -1,11 +1,10 @@
 from asyncio.windows_events import NULL
-from pickle import FALSE
 import string
 import time
-from time import strftime
+from time import strftime, strptime
 import tkinter as tk
 from tkinter.ttk import *
-from tkinter import ANCHOR, CENTER, LEFT, Toplevel, ttk
+from tkinter import ANCHOR, CENTER, LEFT, ON, StringVar, Toplevel, ttk
 import os
 
 window = tk.Tk()
@@ -17,6 +16,12 @@ window.maxsize(640, 480)
 name = os.getlogin()
 task_var = tk.StringVar()
 time_var = tk.StringVar()
+clock1_var = tk.StringVar()
+clock1_var.set("00:00:00")
+clock2_var = tk.StringVar()
+clock2_var.set("00:00:00")
+clock3_var = tk.StringVar()
+clock3_var.set("00:00:00")
 tasks = ""
 bclick = 0
 tclick = 0
@@ -36,6 +41,9 @@ def createTaskWindow():
     new_window.title("Enter Task")
     window.withdraw()
     new_window.minsize(400, 200)
+    task_instruction = tk.Label (new_window,font=("Arial", 10), text = "Insert name of task")
+    task_instruction.place (x = 200, y = 60,
+                            anchor = tk.CENTER)
     task_entry = tk.Entry(new_window, textvariable = task_var, font=("Arial", 20))
     task_entry.place(x = 200, y = 100,
                      anchor = tk.CENTER)
@@ -50,8 +58,11 @@ def createTimeWindow():
     new_window.title("Declare time")
     window.withdraw()
     new_window.minsize(400, 200)
-    task_entry = tk.Entry(new_window, validate="key", validatecommand = (window.register(validateTimeInput), "%P"), textvariable = time_var, font=("Arial", 20))
-    task_entry.place(x = 200, y = 100,
+    time_instruction = tk.Label (new_window,font=("Arial", 10), text = "Insert time in format HH:MM:SS")
+    time_instruction.place (x = 200, y = 60,
+                            anchor = tk.CENTER)
+    time_entry = tk.Entry(new_window, validate="key", validatecommand = (window.register(validateTimeInput), "%P"), textvariable = time_var, font=("Arial", 20))
+    time_entry.place(x = 200, y = 100,
                      anchor = tk.CENTER)
     button_submit = tk.Button(new_window,
                               text = "Set",
@@ -61,11 +72,17 @@ def createTimeWindow():
 
 def validateTimeInput(time_input):
     if len(time_input) > 8:
-        return FALSE
+        return False
     checks = []
     for i, char in enumerate (time_input):
         if i in (2,5):
             checks.append(char == ":")
+        elif i in (3,6):
+            checks.append(char < "6")
+        elif i == 0:
+            checks.append(char < "3")
+        elif i == 1:
+            checks.append(char < "5")
         else:
             checks.append(char.isdecimal())
     return all(checks)
@@ -78,10 +95,13 @@ def submit():
     window.deiconify()
 
 def assignTime():
-    countdown_timer = strftime(time_var.get())
-    if tclick == 0: timer1 ["text"] = countdown_timer
-    elif tclick == 1: timer2 ["text"] = countdown_timer
-    elif tclick == 2: timer3 ["text"] = countdown_timer
+    countdown_timer = time_var.get()
+    if tclick == 0:        
+        clock1_var.set(countdown_timer)
+    elif tclick == 1:
+        clock2_var.set(countdown_timer)
+    elif tclick == 2:
+        clock3_var.set(countdown_timer)
     window.deiconify()
     
         
@@ -138,14 +158,23 @@ def updateTask3():
         button3 ["text"] = "Task 3"
 
 def clearTimer1():
-    if timer1 ["text"] != "00:00:00": timer1 ["text"] = "00:00:00"
+    if timer1 ["text"] != "00:00:00": clock1_var.set("00:00:00")
     
 def clearTimer2():
-    if timer2 ["text"] != "00:00:00": timer2 ["text"] = "00:00:00"
+    if timer2 ["text"] != "00:00:00": clock2_var.set("00:00:00")
 
 def clearTimer3():
-    if timer3 ["text"] != "00:00:00": timer3 ["text"] = "00:00:00"
+    if timer3 ["text"] != "00:00:00": clock3_var.set("00:00:00")               
+      
+def countdown1():        
+        while clock1_var.get() != "00:00:00":            
+            a = ""
 
+# while clock1_var.get() != "dddd":            
+#            window.update()
+#            window.after(1000, clock1_var.set(clock1_var.get()+"d"))
+#            countdown1()
+    
 button1 = tk.Button (window, text = "Task 1", command = updateTask1, width = 30)
 button1.place(x = 120, y = 200)
 
@@ -155,13 +184,13 @@ button2.place(x = 120, y = 240)
 button3 = tk.Button (window, text = "Task 3", command = updateTask3, width = 30)
 button3.place(x = 120, y = 280) 
 
-timer1 = tk.Button (window, text = '00:00:00', command = updateTimer1)
+timer1 = tk.Button (window, textvariable = clock1_var, command = updateTimer1)
 timer1.place(x = 340, y = 200)
 
-timer2 = tk.Button (window, text = '00:00:00', command = updateTimer2)
+timer2 = tk.Button (window, textvariable = clock2_var, command = updateTimer2)
 timer2.place(x = 340, y = 240)
 
-timer3 = tk.Button (window, text = '00:00:00', command = updateTimer3)
+timer3 = tk.Button (window, textvariable = clock3_var, command = updateTimer3)
 timer3.place(x = 340, y = 280)
 
 pause1 = tk.Button (window, text = 'P', width = 2)
@@ -173,7 +202,7 @@ pause2.place(x = 390, y = 240)
 pause3 = tk.Button (window, text = 'P', width = 2)
 pause3.place(x = 390, y = 280)
 
-start1 = tk.Button (window, text = 'S', width = 2)
+start1 = tk.Button (window, text = 'S', width = 2, command = countdown1)
 start1.place(x = 412, y = 200)
 
 start2 = tk.Button (window, text = 'S', width = 2)
