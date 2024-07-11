@@ -3,7 +3,6 @@ import string
 import time
 from time import strftime, strptime
 import tkinter as tk
-from tkinter.ttk import *
 from tkinter import ANCHOR, CENTER, LEFT, ON, StringVar, Toplevel, ttk
 import os
 
@@ -104,11 +103,11 @@ def assignTime():
         clock3_var.set(countdown_timer)
     window.deiconify()
     
-        
+       
 def mainClock():
     string = strftime('%H:%M:%S')
     primary_timer.config(text = string)
-    primary_timer.after(1000, mainClock)
+    window.after(1000, mainClock)
 
 primary_timer = tk.Label(font=('Arial',20))
 primary_timer.place(relx = 1,
@@ -116,19 +115,19 @@ primary_timer.place(relx = 1,
             anchor=tk.NE)
 
 def updateTimer1():
-    if timer1 ["text"] != NULL:
+    if clock1_var.get() == "00:00:00":
         global tclick
         tclick = 0
         createTimeWindow()
         
 def updateTimer2():
-    if timer2 ["text"] != NULL:
+    if clock2_var.get() == "00:00:00":
         global tclick
         tclick = 1
         createTimeWindow()
         
 def updateTimer3():
-    if timer3 ["text"] != NULL:
+    if clock3_var.get() == "00:00:00":
         global tclick
         tclick = 2
         createTimeWindow()
@@ -166,14 +165,27 @@ def clearTimer2():
 def clearTimer3():
     if timer3 ["text"] != "00:00:00": clock3_var.set("00:00:00")               
       
-def countdown1():        
-        while clock1_var.get() != "00:00:00":            
-            a = ""
+def countdown1():
+        hours = tk.StringVar()
+        minutes = tk.StringVar()
+        seconds = tk.StringVar()
+        i = clock1_var.get()
+        hours.set(i[:2])
+        minutes.set(i[3:5])
+        seconds.set(i[-2:])
+        try:
+            temp = int(hours.get())*3600 + int(minutes.get())*60 + int(seconds.get())
+        except:
+            print("Error")
+        while clock1_var != "00:00:00":
+                mins, secs = divmod (temp, 60)
+                hrs, mins = divmod (mins, 60)                               
+                timer = f"{hrs:02}:{mins:02}:{secs:02}"
+                clock1_var.set(str(timer))
+                window.after(1000, window.update())                
+                temp -=1 
+                
 
-# while clock1_var.get() != "dddd":            
-#            window.update()
-#            window.after(1000, clock1_var.set(clock1_var.get()+"d"))
-#            countdown1()
     
 button1 = tk.Button (window, text = "Task 1", command = updateTask1, width = 30)
 button1.place(x = 120, y = 200)
