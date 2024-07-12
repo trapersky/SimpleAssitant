@@ -1,10 +1,12 @@
 from asyncio.windows_events import NULL
 import string
 import time
+import datetime
 from time import strftime, strptime
 import tkinter as tk
 from tkinter import ANCHOR, CENTER, LEFT, ON, StringVar, Toplevel, ttk
 import os
+from tkinter import messagebox
 
 window = tk.Tk()
 window.title("Simple_Assistant")
@@ -180,7 +182,7 @@ class Countdown:
                 timer = f"{hrs:02}:{mins:02}:{secs:02}"
                 clock1_var.set(str(timer))
                 window.after(1000, window.update())                
-                if temp == 0: self.countdown1_running = False
+                if temp == 0: self.countdown1_running = False, messagebox.showinfo("Task complete", "Task 1 is complete!")
                 else: temp -=1
                 
     def countdown2(self):
@@ -202,7 +204,7 @@ class Countdown:
                 timer = f"{hrs:02}:{mins:02}:{secs:02}"
                 clock2_var.set(str(timer))
                 window.after(1000, window.update())                
-                if temp == 0: self.countdown2_running = False
+                if temp == 0: self.countdown2_running = False, messagebox.showinfo("Task complete", "Task 2 is complete!")
                 else: temp -=1
                 
     def countdown3(self):
@@ -224,7 +226,7 @@ class Countdown:
                 timer = f"{hrs:02}:{mins:02}:{secs:02}"
                 clock3_var.set(str(timer))
                 window.after(1000, window.update())                
-                if temp == 0: self.countdown3_running = False
+                if temp == 0: self.countdown3_running = False, messagebox.showinfo("Task complete", "Task 3 is complete!")
                 else: temp -=1
                 
 Count = Countdown("Count")
@@ -249,7 +251,6 @@ def clearTimer2():
 def clearTimer3():
     clock3_var.set("00:00:00")
     Count.countdown3_running = False
-
     
 button1 = tk.Button (window, text = "Task 1", command = updateTask1, width = 30)
 button1.place(x = 120, y = 200)
