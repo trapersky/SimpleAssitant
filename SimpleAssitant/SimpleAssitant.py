@@ -80,8 +80,6 @@ def validateTimeInput(time_input):
             checks.append(char < "6")
         elif i == 0:
             checks.append(char < "3")
-        elif i == 1:
-            checks.append(char < "5")
         else:
             checks.append(char.isdecimal())
     return all(checks)
@@ -156,16 +154,15 @@ def updateTask3():
     else:
         button3 ["text"] = "Task 3"
 
-def clearTimer1():
-    if timer1 ["text"] != "00:00:00": clock1_var.set("00:00:00")
-    
-def clearTimer2():
-    if timer2 ["text"] != "00:00:00": clock2_var.set("00:00:00")
+class Countdown:
+    def __init__ (self, name):
+        self.name = name
+        self.countdown1_running = False
+        self.countdown2_running = False
+        self.countdown3_running = False
 
-def clearTimer3():
-    if timer3 ["text"] != "00:00:00": clock3_var.set("00:00:00")               
-      
-def countdown1():
+    def countdown1(self):
+        self.countdown1_running = True
         hours = tk.StringVar()
         minutes = tk.StringVar()
         seconds = tk.StringVar()
@@ -177,14 +174,81 @@ def countdown1():
             temp = int(hours.get())*3600 + int(minutes.get())*60 + int(seconds.get())
         except:
             print("Error")
-        while clock1_var != "00:00:00":
+        while self.countdown1_running == True:
                 mins, secs = divmod (temp, 60)
                 hrs, mins = divmod (mins, 60)                               
                 timer = f"{hrs:02}:{mins:02}:{secs:02}"
                 clock1_var.set(str(timer))
                 window.after(1000, window.update())                
-                temp -=1 
+                if temp == 0: self.countdown1_running = False
+                else: temp -=1
                 
+    def countdown2(self):
+        self.countdown2_running = True
+        hours = tk.StringVar()
+        minutes = tk.StringVar()
+        seconds = tk.StringVar()
+        i = clock2_var.get()
+        hours.set(i[:2])
+        minutes.set(i[3:5])
+        seconds.set(i[-2:])
+        try:
+            temp = int(hours.get())*3600 + int(minutes.get())*60 + int(seconds.get())
+        except:
+            print("Error")
+        while self.countdown2_running == True:
+                mins, secs = divmod (temp, 60)
+                hrs, mins = divmod (mins, 60)                               
+                timer = f"{hrs:02}:{mins:02}:{secs:02}"
+                clock2_var.set(str(timer))
+                window.after(1000, window.update())                
+                if temp == 0: self.countdown2_running = False
+                else: temp -=1
+                
+    def countdown3(self):
+        self.countdown3_running = True
+        hours = tk.StringVar()
+        minutes = tk.StringVar()
+        seconds = tk.StringVar()
+        i = clock3_var.get()
+        hours.set(i[:2])
+        minutes.set(i[3:5])
+        seconds.set(i[-2:])
+        try:
+            temp = int(hours.get())*3600 + int(minutes.get())*60 + int(seconds.get())
+        except:
+            print("Error")
+        while self.countdown3_running == True:
+                mins, secs = divmod (temp, 60)
+                hrs, mins = divmod (mins, 60)                               
+                timer = f"{hrs:02}:{mins:02}:{secs:02}"
+                clock3_var.set(str(timer))
+                window.after(1000, window.update())                
+                if temp == 0: self.countdown3_running = False
+                else: temp -=1
+                
+Count = Countdown("Count")
+
+def stopTime1():
+    Count.countdown1_running = False
+    
+def stopTime2():
+    Count.countdown2_running = False
+    
+def stopTime3():
+    Count.countdown3_running = False
+    
+def clearTimer1():
+     clock1_var.set("00:00:00")
+     Count.countdown1_running = False
+    
+def clearTimer2():
+    clock2_var.set("00:00:00")
+    Count.countdown2_running = False
+
+def clearTimer3():
+    clock3_var.set("00:00:00")
+    Count.countdown3_running = False
 
     
 button1 = tk.Button (window, text = "Task 1", command = updateTask1, width = 30)
@@ -205,22 +269,22 @@ timer2.place(x = 340, y = 240)
 timer3 = tk.Button (window, textvariable = clock3_var, command = updateTimer3)
 timer3.place(x = 340, y = 280)
 
-pause1 = tk.Button (window, text = 'P', width = 2)
+pause1 = tk.Button (window, text = 'P', width = 2, command = stopTime1)
 pause1.place(x = 390, y = 200)
 
-pause2 = tk.Button (window, text = 'P', width = 2)
+pause2 = tk.Button (window, text = 'P', width = 2, command = stopTime2)
 pause2.place(x = 390, y = 240)
 
-pause3 = tk.Button (window, text = 'P', width = 2)
+pause3 = tk.Button (window, text = 'P', width = 2, command = stopTime3)
 pause3.place(x = 390, y = 280)
 
-start1 = tk.Button (window, text = 'S', width = 2, command = countdown1)
+start1 = tk.Button (window, text = 'S', width = 2, command = Count.countdown1)
 start1.place(x = 412, y = 200)
 
-start2 = tk.Button (window, text = 'S', width = 2)
+start2 = tk.Button (window, text = 'S', width = 2, command = Count.countdown2)
 start2.place(x = 412, y = 240)
 
-start3 = tk.Button (window, text = 'S', width = 2)
+start3 = tk.Button (window, text = 'S', width = 2, command = Count.countdown3)
 start3.place(x = 412, y = 280)
 
 clear1 = tk.Button (window, text = 'C', width = 2, command = clearTimer1)
